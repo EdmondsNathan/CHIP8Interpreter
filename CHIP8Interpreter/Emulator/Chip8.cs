@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,8 @@ namespace CHIP8Interpreter.Emulator
 		public Byte SoundTimer;
 		public Byte[] VariableRegisters = new Byte[16];
 
-		private static int _fontStartingAddress = 0x050;
+		public static int RomStartingAddress = 0x200;
+		public static int FontStartingAddress = 0x050;
 		private static Byte[] _font =
 		{
 			0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -44,11 +46,21 @@ namespace CHIP8Interpreter.Emulator
 			PutFontIntoMemory();
 		}
 
+		public Chip8(string filePath) : this()
+		{
+			Byte[] rom = File.ReadAllBytes(filePath);
+
+			for (int i = 0; i < rom.Length; i++)
+			{
+				RAM[RomStartingAddress + i] = rom[i];
+			}
+		}
+
 		private void PutFontIntoMemory()
 		{
 			for (int i = 0; i < _font.Length; i++)
 			{
-				RAM[_fontStartingAddress + i] = _font[i];
+				RAM[FontStartingAddress + i] = _font[i];
 			}
 		}
 	}
