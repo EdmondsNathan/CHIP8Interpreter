@@ -91,7 +91,7 @@ namespace CHIP8Interpreter
 		private Interpreter _interpreter;
 		private void TestCodeInit()
 		{
-			_chip8 = new Chip8("ROMs/1-chip8-logo.ch8");
+			_chip8 = new Chip8("ROMs/2-ibm-logo.ch8");
 			_interpreter = new Interpreter(_chip8);
 
 			/*for (int i = Chip8.RomStartingAddress; i < _chip8.RAM.Length; i++)

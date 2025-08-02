@@ -100,7 +100,7 @@ namespace CHIP8Interpreter.Emulator
 					_chip8.VariableRegisters[instruction.X] = instruction.NN;
 					break;
 				case 0x7:
-
+					_chip8.VariableRegisters[instruction.X] += instruction.NN;
 					break;
 				case 0x8:
 
