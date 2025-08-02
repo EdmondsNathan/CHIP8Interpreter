@@ -12,16 +12,19 @@ namespace CHIP8Interpreter.Emulator
 	{
 		public Byte[] RAM = new Byte[4096];
 		public UInt64[] Display = new UInt64[32];
-		public UInt16 ProgramCounter;
+		//public bool[,] Display = new bool[DisplayHeight, DisplayWidth];
+		public UInt16 ProgramCounter = 512;
 		public UInt16 IndexRegister;
 		public Stack<UInt16> SubStack = new(16);
 		public Byte DelayTimer;
 		public Byte SoundTimer;
 		public Byte[] VariableRegisters = new Byte[16];
 
-		public static int RomStartingAddress = 0x200;
-		public static int FontStartingAddress = 0x050;
-		private static Byte[] _font =
+		public const int DisplayWidth = 64;
+		public const int DisplayHeight = 32;
+		public const UInt16 RomStartingAddress = 0x200;
+		public const int FontStartingAddress = 0x050;
+		private static readonly Byte[] _font =
 		{
 			0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
 			0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -52,7 +55,7 @@ namespace CHIP8Interpreter.Emulator
 
 			for (int i = 0; i < rom.Length; i++)
 			{
-				RAM[RomStartingAddress + i] = rom[i];
+				this.RAM[RomStartingAddress + i] = rom[i];
 			}
 		}
 
