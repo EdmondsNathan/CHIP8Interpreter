@@ -12,7 +12,6 @@ namespace CHIP8Interpreter.Emulator
 	{
 		public Byte[] RAM = new Byte[4096];
 		public UInt64[] Display = new UInt64[32];
-		//public bool[,] Display = new bool[DisplayHeight, DisplayWidth];
 		public UInt16 ProgramCounter = 512;
 		public UInt16 IndexRegister;
 		public Stack<UInt16> SubStack = new(16);
