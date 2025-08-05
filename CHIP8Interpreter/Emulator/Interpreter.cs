@@ -33,13 +33,22 @@ namespace CHIP8Interpreter.Emulator
 			NNN = (UInt16)(fullInstruction & 0x0FFF);
 		}
 	}
+
+	public enum CompatibilityMode
+	{
+		Legacy,
+		Modern
+	}
+
 	public class Interpreter
 	{
 		private Chip8 _chip8;
+		private CompatibilityMode _compatibilityMode;
 
-		public Interpreter(Chip8 chip8)
+		public Interpreter(Chip8 chip8, CompatibilityMode compatibilityMode = CompatibilityMode.Modern)
 		{
 			this._chip8 = chip8;
+			this._compatibilityMode = compatibilityMode;
 		}
 
 		public Instruction Fetch()
