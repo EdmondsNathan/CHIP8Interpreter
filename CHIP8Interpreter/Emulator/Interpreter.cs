@@ -267,6 +267,18 @@ namespace CHIP8Interpreter.Emulator
 								}
 							}
 							break;
+						case 0x65:  //FX65 Load RAM I to I+x in V0 to Vx, legacy(increment I)
+							index = _chip8.IndexRegister;
+							for (int i = 0; i <= instruction.X; i++)
+							{
+								_chip8.VariableRegisters[i] = _chip8.RAM[index + i];
+
+								if (_compatibilityMode == CompatibilityMode.Legacy)
+								{
+									_chip8.IndexRegister++;
+								}
+							}
+							break;
 						default:
 							Debug.WriteLine("Instruction not found");
 							break;
