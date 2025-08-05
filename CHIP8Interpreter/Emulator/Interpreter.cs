@@ -91,7 +91,11 @@ namespace CHIP8Interpreter.Emulator
 					_chip8.SubStack.Push(_chip8.ProgramCounter);
 					_chip8.ProgramCounter = instruction.NNN;
 					break;
-				case 0x3:   //3XNNSkip if VX == NN
+				case 0x3:   //3XNN Skip if VX == NN
+					if (_chip8.VariableRegisters[instruction.X] == instruction.NN)
+					{
+						_chip8.ProgramCounter += 2;
+					}
 					break;
 				case 0x4:   //4XNN Skip if VX != NN
 					break;
