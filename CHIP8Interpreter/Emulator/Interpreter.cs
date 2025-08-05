@@ -169,6 +169,11 @@ namespace CHIP8Interpreter.Emulator
 					}
 					break;
 				case 0x9:   //9XY0 Skip if VX != VY
+					if (_chip8.VariableRegisters[instruction.X] != _chip8.VariableRegisters[instruction.Y])
+					{
+						_chip8.ProgramCounter += 2;
+					}
+					break;
 					_chip8.IndexRegister = (UInt16)(instruction.NNN);
 					break;
 				case 0xB:
