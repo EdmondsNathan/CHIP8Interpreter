@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CHIP8Interpreter.Emulator
 {
@@ -71,8 +67,6 @@ namespace CHIP8Interpreter.Emulator
 			{
 				return;
 			}
-
-			Debug.WriteLine(Convert.ToString(instruction.FullInstruction, 16));
 
 			switch (instruction.HighNibble)
 			{
