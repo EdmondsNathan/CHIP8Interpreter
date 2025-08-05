@@ -68,6 +68,9 @@ namespace CHIP8Interpreter.Emulator
 				return;
 			}
 
+			int result;
+			byte flag;
+
 			switch (instruction.HighNibble)
 			{
 				case 0x0:
@@ -134,13 +137,14 @@ namespace CHIP8Interpreter.Emulator
 							_chip8.VariableRegisters[instruction.X] = (Byte)(_chip8.VariableRegisters[instruction.X] ^ _chip8.VariableRegisters[instruction.Y]);
 							break;
 						case 4: //8XY4 Set VX to VX + VY
-							int result = _chip8.VariableRegisters[instruction.X] + _chip8.VariableRegisters[instruction.Y];
+							result = _chip8.VariableRegisters[instruction.X] + _chip8.VariableRegisters[instruction.Y];
 							_chip8.VariableRegisters[instruction.X] = (Byte)result;
 							_chip8.VariableRegisters[0xF] = (Byte)(result > 255 ? 1 : 0);
 							break;
 						case 5: //8XY5 Set VX to VX - VY
-							_chip8.VariableRegisters[0xF] = (Byte)(_chip8.VariableRegisters[instruction.X] > _chip8.VariableRegisters[instruction.Y] ? 1 : 0);
-							_chip8.VariableRegisters[instruction.X] -= _chip8.VariableRegisters[instruction.Y];
+							result = _chip8.VariableRegisters[instruction.X] - _chip8.VariableRegisters[instruction.Y];
+							_chip8.VariableRegisters[instruction.X] = (byte)result;
+							_chip8.VariableRegisters[0xF] = (Byte)(result >= 0 ? 1 : 0);
 							break;
 						case 6: //8XY6 Shift, Legacy(Set VX to VY), Modern(nothing) and bit shift right 1, set VF to shifted out bit
 							if (_compatibilityMode == CompatibilityMode.Legacy)
@@ -148,13 +152,17 @@ namespace CHIP8Interpreter.Emulator
 								_chip8.VariableRegisters[instruction.X] = _chip8.VariableRegisters[instruction.Y];
 							}
 
-							_chip8.VariableRegisters[0xF] = (Byte)(_chip8.VariableRegisters[instruction.X] & 1);
+							result = (byte)(_chip8.VariableRegisters[instruction.X] >> 1);
+							flag = (byte)((_chip8.VariableRegisters[instruction.X] & 1) == 1 ? 1 : 0);
 
-							_chip8.VariableRegisters[instruction.X] = (Byte)(_chip8.VariableRegisters[instruction.X] >> 1);
+							_chip8.VariableRegisters[instruction.X] = (byte)(result);
+
+							_chip8.VariableRegisters[0xF] = flag;
 							break;
 						case 7: //8XY7 Set VX to VY - VX
-							_chip8.VariableRegisters[0xF] = (Byte)(_chip8.VariableRegisters[instruction.Y] > _chip8.VariableRegisters[instruction.X] ? 1 : 0);
-							_chip8.VariableRegisters[instruction.X] = (Byte)(_chip8.VariableRegisters[instruction.Y] - _chip8.VariableRegisters[instruction.X]);
+							result = _chip8.VariableRegisters[instruction.Y] - _chip8.VariableRegisters[instruction.X];
+							_chip8.VariableRegisters[instruction.X] = (byte)result;
+							_chip8.VariableRegisters[0xF] = (Byte)(result >= 0 ? 1 : 0);
 							break;
 						case 0xE:   //8XYE Shift, Legacy(Set VX to VY), Modern(nothing) and bit shift left 1, set VF to shifted out bit
 							if (_compatibilityMode == CompatibilityMode.Legacy)
@@ -162,9 +170,12 @@ namespace CHIP8Interpreter.Emulator
 								_chip8.VariableRegisters[instruction.X] = _chip8.VariableRegisters[instruction.Y];
 							}
 
-							_chip8.VariableRegisters[0xF] = (Byte)(_chip8.VariableRegisters[instruction.X] & 0x80);
+							result = (byte)(_chip8.VariableRegisters[instruction.X] << 1);
+							flag = (byte)((_chip8.VariableRegisters[instruction.X] & 0x80) == 0x80 ? 1 : 0);
 
-							_chip8.VariableRegisters[instruction.X] = (Byte)(_chip8.VariableRegisters[instruction.X] << 1);
+							_chip8.VariableRegisters[instruction.X] = (byte)(result);
+
+							_chip8.VariableRegisters[0xF] = flag;
 							break;
 						default:
 							Debug.WriteLine("Instruction not found");
@@ -256,10 +267,9 @@ namespace CHIP8Interpreter.Emulator
 							}
 							break;
 						case 0x55:  //FX55 Save V0 to VX in RAM I to I+X, legacy(increment I)
-							int index = _chip8.IndexRegister;
 							for (int i = 0; i <= instruction.X; i++)
 							{
-								_chip8.RAM[index + i] = _chip8.VariableRegisters[i];
+								_chip8.RAM[_chip8.IndexRegister + i] = _chip8.VariableRegisters[i];
 
 								if (_compatibilityMode == CompatibilityMode.Legacy)
 								{
@@ -268,10 +278,9 @@ namespace CHIP8Interpreter.Emulator
 							}
 							break;
 						case 0x65:  //FX65 Load RAM I to I+x in V0 to Vx, legacy(increment I)
-							index = _chip8.IndexRegister;
 							for (int i = 0; i <= instruction.X; i++)
 							{
-								_chip8.VariableRegisters[i] = _chip8.RAM[index + i];
+								_chip8.VariableRegisters[i] = _chip8.RAM[_chip8.IndexRegister + i];
 
 								if (_compatibilityMode == CompatibilityMode.Legacy)
 								{
