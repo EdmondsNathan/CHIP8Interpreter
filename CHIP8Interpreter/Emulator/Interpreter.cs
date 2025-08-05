@@ -199,11 +199,11 @@ namespace CHIP8Interpreter.Emulator
 							break;
 						}
 
-						Byte row = _chip8.RAM[i + _chip8.IndexRegister];
+						Byte row = _chip8.RAM[_chip8.IndexRegister + i];
 
 						for (int e = 0; e < 8; e++)
 						{
-							if (x + e >= Chip8.DisplayWidth - 1)    //clip sprite
+							if (x + e > Chip8.DisplayWidth - 1)    //clip sprite
 							{
 								break;
 							}
@@ -216,11 +216,11 @@ namespace CHIP8Interpreter.Emulator
 
 							if (((_chip8.Display[y + i] >> (Chip8.DisplayWidth - (x + e))) & 0x1) == 0)    //is screen pixel 0?
 							{
-								_chip8.Display[y + i] += (UInt64)Math.Pow(2, Chip8.DisplayWidth - (x + e));
+								_chip8.Display[y + i] += (UInt64)(1) << (Chip8.DisplayWidth - x - e);
 							}
 							else
 							{
-								_chip8.Display[y + i] -= (UInt64)Math.Pow(2, Chip8.DisplayWidth - (x + e));
+								_chip8.Display[y + i] -= (UInt64)(1) << (Chip8.DisplayWidth - x - e);
 
 								_chip8.VariableRegisters[0xF] = 1;
 							}
