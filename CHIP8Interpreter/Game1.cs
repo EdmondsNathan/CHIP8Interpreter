@@ -59,7 +59,6 @@ namespace CHIP8Interpreter
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			// TODO: Add your drawing code here
-			Debug.WriteLine("Cycle at PC " + _chip8.ProgramCounter);
 			_interpreter.Execute(_interpreter.Fetch());
 
 			_spriteBatch.Begin();
@@ -74,8 +73,6 @@ namespace CHIP8Interpreter
 			for (int y = 0; y < Chip8.DisplayHeight; y++)
 			{
 				UInt64 row = _chip8.Display[y];
-
-				//String output = "";
 
 				for (int x = 0; x < Chip8.DisplayWidth; x++)
 				{
@@ -93,19 +90,6 @@ namespace CHIP8Interpreter
 		{
 			_chip8 = new Chip8("ROMs/2-ibm-logo.ch8");
 			_interpreter = new Interpreter(_chip8);
-
-			/*for (int i = Chip8.RomStartingAddress; i < _chip8.RAM.Length; i++)
-			{
-				Debug.WriteLine("Address " + i + $": {_chip8.RAM[i]:X}");
-			}*/
-
-			/*Instruction instruction = new Instruction(0x1234);
-			Debug.WriteLine(instruction.HighNibble);
-			Debug.WriteLine(instruction.X);
-			Debug.WriteLine(instruction.Y);
-			Debug.WriteLine(instruction.N);
-			Debug.WriteLine(instruction.NN);
-			Debug.WriteLine(instruction.NNN);*/
 		}
 	}
 }
