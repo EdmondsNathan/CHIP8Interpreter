@@ -62,6 +62,7 @@ namespace CHIP8Interpreter
 			_interpreter.Execute(_interpreter.Fetch());
 
 			_spriteBatch.Begin();
+			_spriteBatch.Draw(_pixel, new Rectangle(0, 0, Chip8.DisplayWidth * 10, Chip8.DisplayHeight * 10), Color.Black);
 			DrawDisplay();
 			_spriteBatch.End();
 
@@ -78,7 +79,7 @@ namespace CHIP8Interpreter
 				{
 					if (((row >> Chip8.DisplayWidth - x) & 1) == 1)
 					{
-						_spriteBatch.Draw(_pixel, new Rectangle(x * 10, y * 10, 10, 10), Color.White);
+						_spriteBatch.Draw(_pixel, new Rectangle(x * 10, y * 10, 10, 10), Color.Red);
 					}
 				}
 			}
