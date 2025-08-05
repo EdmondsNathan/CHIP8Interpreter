@@ -88,6 +88,8 @@ namespace CHIP8Interpreter.Emulator
 					_chip8.ProgramCounter = (UInt16)(instruction.NNN);
 					break;
 				case 0x2:   //2NNN Subroutine, push PC to sub stack, jump PC to NNN
+					_chip8.SubStack.Push(_chip8.ProgramCounter);
+					_chip8.ProgramCounter = instruction.NNN;
 					break;
 				case 0x3:   //3XNNSkip if VX == NN
 					break;
