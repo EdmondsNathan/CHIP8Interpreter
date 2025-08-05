@@ -255,6 +255,18 @@ namespace CHIP8Interpreter.Emulator
 								_chip8.RAM[_chip8.IndexRegister + i] = (byte)(Math.Floor(_chip8.VariableRegisters[instruction.X] / Math.Pow(10, 2 - i)) % 10);
 							}
 							break;
+						case 0x55:  //FX55 Save V0 to VX in RAM I to I+X, legacy(increment I)
+							int index = _chip8.IndexRegister;
+							for (int i = 0; i <= instruction.X; i++)
+							{
+								_chip8.RAM[index + i] = _chip8.VariableRegisters[i];
+
+								if (_compatibilityMode == CompatibilityMode.Legacy)
+								{
+									_chip8.IndexRegister++;
+								}
+							}
+							break;
 						default:
 							Debug.WriteLine("Instruction not found");
 							break;
