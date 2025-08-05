@@ -73,7 +73,7 @@ namespace CHIP8Interpreter.Emulator
 				case 0x0:
 					switch (instruction.FullInstruction)
 					{
-						case 0x00E0:    //Clear Screen
+						case 0x00E0:    //00E0 Clear Screen
 							for (int row = 0; row < _chip8.Display.Length; row++)
 							{
 								_chip8.Display[row] = 0;
@@ -84,34 +84,28 @@ namespace CHIP8Interpreter.Emulator
 							break;
 					}
 					break;
-				case 0x1:   //Jump Program Counter to NNN
+				case 0x1:   //1NNN Jump Program Counter to NNN
 					_chip8.ProgramCounter = (UInt16)(instruction.NNN);
 					break;
-				case 0x2:
-
+				case 0x2:   //2NNN Subroutine, push PC to sub stack, jump PC to NNN
 					break;
-				case 0x3:
-
+				case 0x3:   //3XNNSkip if VX == NN
 					break;
-				case 0x4:
-
+				case 0x4:   //4XNN Skip if VX != NN
 					break;
-				case 0x5:
-
+				case 0x5:   //5XY0 Skip if VX == VY
 					break;
-				case 0x6:   //Set register X to NN
+				case 0x6:   //6XNN Set register X to NN
 					_chip8.VariableRegisters[instruction.X] = instruction.NN;
 					break;
-				case 0x7:
+				case 0x7:   //7XNN Add NN to VX
 					_chip8.VariableRegisters[instruction.X] += instruction.NN;
 					break;
 				case 0x8:
 
-					break;
-				case 0x9:
 
 					break;
-				case 0xA:   //Set Index I to NNN
+				case 0x9:   //9XY0 Skip if VX != VY
 					_chip8.IndexRegister = (UInt16)(instruction.NNN);
 					break;
 				case 0xB:
@@ -120,7 +114,7 @@ namespace CHIP8Interpreter.Emulator
 				case 0xC:
 
 					break;
-				case 0xD:   //Draw N pixels tall sprite from Index Register I's memory location at vX and vY
+				case 0xD:   //DXYN Draw N pixels tall sprite from Index Register I's memory location at vX and vY
 					Byte x = (Byte)(_chip8.VariableRegisters[instruction.X] % Chip8.DisplayWidth);
 					Byte y = (Byte)(_chip8.VariableRegisters[instruction.Y] % Chip8.DisplayHeight);
 
