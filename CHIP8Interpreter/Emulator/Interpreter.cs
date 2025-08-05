@@ -139,6 +139,16 @@ namespace CHIP8Interpreter.Emulator
 							_chip8.VariableRegisters[0xF] = (Byte)(_chip8.VariableRegisters[instruction.X] > _chip8.VariableRegisters[instruction.Y] ? 1 : 0);
 							_chip8.VariableRegisters[instruction.X] -= _chip8.VariableRegisters[instruction.Y];
 							break;
+						case 6: //8XY6 Shift, Legacy(Set VX to VY), Modern(nothing) and bit shift right 1, set VF to shifted out bit
+							if (_compatibilityMode == CompatibilityMode.Legacy)
+							{
+								_chip8.VariableRegisters[instruction.X] = _chip8.VariableRegisters[instruction.Y];
+							}
+
+							_chip8.VariableRegisters[0xF] = (Byte)(_chip8.VariableRegisters[instruction.X] & 1);
+
+							_chip8.VariableRegisters[instruction.X] = (Byte)(_chip8.VariableRegisters[instruction.X] >> 1);
+							break;
 
 
 						default:
