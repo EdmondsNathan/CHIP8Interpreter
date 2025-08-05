@@ -174,6 +174,7 @@ namespace CHIP8Interpreter.Emulator
 						_chip8.ProgramCounter += 2;
 					}
 					break;
+				case 0xA:   //ANNN Set Index I to NNN
 					_chip8.IndexRegister = (UInt16)(instruction.NNN);
 					break;
 				case 0xB:
