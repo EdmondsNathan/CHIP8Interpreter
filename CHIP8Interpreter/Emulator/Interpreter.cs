@@ -116,8 +116,17 @@ namespace CHIP8Interpreter.Emulator
 					_chip8.VariableRegisters[instruction.X] += instruction.NN;
 					break;
 				case 0x8:
+					switch (instruction.N)
+					{
+						case 0: //8XY0 Set VX = VY
+							_chip8.VariableRegisters[instruction.X] = _chip8.VariableRegisters[instruction.Y];
+							break;
 
 
+						default:
+							Debug.WriteLine("Instruction not found");
+							break;
+					}
 					break;
 				case 0x9:   //9XY0 Skip if VX != VY
 					_chip8.IndexRegister = (UInt16)(instruction.NNN);
