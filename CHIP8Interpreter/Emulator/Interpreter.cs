@@ -236,6 +236,9 @@ namespace CHIP8Interpreter.Emulator
 						case 0x07:  //FX07 Set VX to Delay Timer
 							_chip8.VariableRegisters[instruction.X] = _chip8.DelayTimer;
 							break;
+						case 0x15:  //FX15 Set Delay Timer to VX
+							_chip8.DelayTimer = _chip8.VariableRegisters[instruction.X];
+							break;
 						default:
 							Debug.WriteLine("Instruction not found");
 							break;
