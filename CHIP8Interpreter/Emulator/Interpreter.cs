@@ -249,6 +249,12 @@ namespace CHIP8Interpreter.Emulator
 							}
 							_chip8.IndexRegister += _chip8.VariableRegisters[instruction.X];
 							break;
+						case 0x33:  //FX33 Convert VX to decimal and stores in RAM I to I+2
+							for (int i = 0; i < 3; i++)
+							{
+								_chip8.RAM[_chip8.IndexRegister + i] = (byte)(Math.Floor(_chip8.VariableRegisters[instruction.X] / Math.Pow(10, 2 - i)) % 10);
+							}
+							break;
 						default:
 							Debug.WriteLine("Instruction not found");
 							break;
