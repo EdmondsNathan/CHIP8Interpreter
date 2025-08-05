@@ -130,6 +130,11 @@ namespace CHIP8Interpreter.Emulator
 						case 3: //8XY3 Set VX to VX ^ VY
 							_chip8.VariableRegisters[instruction.X] = (Byte)(_chip8.VariableRegisters[instruction.X] ^ _chip8.VariableRegisters[instruction.Y]);
 							break;
+						case 4: //8XY4 Set VX to VX + VY
+							int result = _chip8.VariableRegisters[instruction.X] + _chip8.VariableRegisters[instruction.Y];
+							_chip8.VariableRegisters[instruction.X] = (Byte)result;
+							_chip8.VariableRegisters[0xF] = (Byte)(result > 255 ? 1 : 0);
+							break;
 
 
 						default:
