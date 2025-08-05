@@ -104,6 +104,10 @@ namespace CHIP8Interpreter.Emulator
 					}
 					break;
 				case 0x5:   //5XY0 Skip if VX == VY
+					if (_chip8.VariableRegisters[instruction.X] == _chip8.VariableRegisters[instruction.Y])
+					{
+						_chip8.ProgramCounter += 2;
+					}
 					break;
 				case 0x6:   //6XNN Set register X to NN
 					_chip8.VariableRegisters[instruction.X] = instruction.NN;
