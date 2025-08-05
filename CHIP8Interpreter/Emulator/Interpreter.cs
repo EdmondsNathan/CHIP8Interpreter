@@ -79,8 +79,11 @@ namespace CHIP8Interpreter.Emulator
 								_chip8.Display[row] = 0;
 							}
 							break;
-						case 0x00EE:    //Return from subroutine
-
+						case 0x00EE:    //00EE Return from subroutine, Set PC to sub stack and pop
+							_chip8.ProgramCounter = _chip8.SubStack.Pop();
+							break;
+						default:
+							Debug.WriteLine("Instruction not found");
 							break;
 					}
 					break;
