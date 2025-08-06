@@ -191,8 +191,15 @@ namespace CHIP8Interpreter.Emulator
 				case 0xA:   //ANNN Set Index I to NNN
 					_chip8.IndexRegister = (UInt16)(instruction.NNN);
 					break;
-				case 0xB:
-
+				case 0xB:   //BNNN/BXNN Legacy(Jump to instruction NNN + V0) Modern(Jump to instruction XNN + VX)
+					if (_compatibilityMode == CompatibilityMode.Legacy)
+					{
+						_chip8.ProgramCounter = (byte)(instruction.NNN + _chip8.VariableRegisters[0]);
+					}
+					else
+					{
+						_chip8.ProgramCounter = (byte)(instruction.NNN + _chip8.VariableRegisters[instruction.X]);
+					}
 					break;
 				case 0xC:
 
