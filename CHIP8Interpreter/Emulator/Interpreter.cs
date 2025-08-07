@@ -40,6 +40,7 @@ namespace CHIP8Interpreter.Emulator
 	{
 		private Chip8 _chip8;
 		private CompatibilityMode _compatibilityMode;
+		private Random rnd = new();
 
 		public Interpreter(Chip8 chip8, CompatibilityMode compatibilityMode = CompatibilityMode.Modern)
 		{
@@ -201,8 +202,8 @@ namespace CHIP8Interpreter.Emulator
 						_chip8.ProgramCounter = (byte)(instruction.NNN + _chip8.VariableRegisters[instruction.X]);
 					}
 					break;
-				case 0xC:
-
+				case 0xC:   //CXNN Generate a random number, AND with NN, and store in VX
+					_chip8.VariableRegisters[instruction.X] = (byte)(rnd.Next(0, 0x100) & instruction.NN);
 					break;
 				case 0xD:   //DXYN Draw N pixels tall sprite from Index Register I's memory location at vX and vY
 					Byte x = (Byte)(_chip8.VariableRegisters[instruction.X] % Chip8.DisplayWidth);
