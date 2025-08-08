@@ -255,6 +255,12 @@ namespace CHIP8Interpreter.Emulator
 								_chip8.ProgramCounter += 2;
 							}
 							break;
+						case 0xA1:  //EXA1 Skip if key is NOT down
+							if (((_chip8.InputRegister >> (_chip8.VariableRegisters[instruction.X])) & 1) == 0)
+							{
+								_chip8.ProgramCounter += 2;
+							}
+							break;
 						default:
 							Debug.WriteLine("Instruction not found");
 							break;
