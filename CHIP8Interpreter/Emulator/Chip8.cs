@@ -51,12 +51,7 @@ namespace CHIP8Interpreter.Emulator
 
 		public Chip8(string filePath) : this()
 		{
-			Byte[] rom = File.ReadAllBytes(filePath);
-
-			for (int i = 0; i < rom.Length; i++)
-			{
-				this.RAM[RomStartingAddress + i] = rom[i];
-			}
+			LoadRom(filePath);
 		}
 
 		private void PutFontIntoMemory()
@@ -64,6 +59,16 @@ namespace CHIP8Interpreter.Emulator
 			for (int i = 0; i < _font.Length; i++)
 			{
 				RAM[FontStartingAddress + i] = _font[i];
+			}
+		}
+
+		private void LoadRom(string filePath)
+		{
+			Byte[] rom = File.ReadAllBytes(filePath);
+
+			for (int i = 0; i < rom.Length; i++)
+			{
+				this.RAM[RomStartingAddress + i] = rom[i];
 			}
 		}
 	}
