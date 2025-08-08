@@ -41,6 +41,7 @@ namespace CHIP8Interpreter.Emulator
 		private Chip8 _chip8;
 		private CompatibilityMode _compatibilityMode;
 		private Random rnd = new();
+		private UInt16 _previousInput;
 
 		public Interpreter(Chip8 chip8, CompatibilityMode compatibilityMode = CompatibilityMode.Modern)
 		{
@@ -273,11 +274,22 @@ namespace CHIP8Interpreter.Emulator
 						case 0x07:  //FX07 Set VX to Delay Timer
 							_chip8.VariableRegisters[instruction.X] = _chip8.DelayTimer;
 							break;
-						case 0x0A:  //Blocks until key X is pressed
-							if (((_chip8.InputRegister >> instruction.X) & 1) == 0)
+						case 0x0A:  //FX0A Blocks until a key is released
+							if (_previousInput == _chip8.InputRegister)
 							{
 								_chip8.ProgramCounter -= 2;
+								break;
 							}
+
+							for (int i = 0; i < 0xF; i++)
+							{
+								if ((((_previousInput >> i) & 1) == 1) && ((_chip8.InputRegister >> i) & 1) == 0)   //Was the key released?
+								{
+									break;
+								}
+							}
+
+							_chip8.ProgramCounter -= 2;
 							break;
 						case 0x15:  //FX15 Set Delay Timer to VX
 							_chip8.DelayTimer = _chip8.VariableRegisters[instruction.X];
@@ -330,6 +342,7 @@ namespace CHIP8Interpreter.Emulator
 					Debug.WriteLine("Instruction not found");
 					break;
 			}
+			_previousInput = _chip8.InputRegister;
 		}
 	}
 }
