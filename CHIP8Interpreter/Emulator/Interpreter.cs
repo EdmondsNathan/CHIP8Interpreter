@@ -305,6 +305,9 @@ namespace CHIP8Interpreter.Emulator
 							_chip8.IndexRegister = (UInt16)result;
 							_chip8.VariableRegisters[0xF] = flag;
 							break;
+						case 0x29:  //FX29 Load font character VX address into I
+							_chip8.IndexRegister = (UInt16)(Chip8.FontStartingAddress + ((_chip8.VariableRegisters[instruction.X] & 0xFF) * 5));
+							break;
 						case 0x33:  //FX33 Convert VX to decimal and stores in RAM I to I+2
 							for (int i = 0; i < 3; i++)
 							{
