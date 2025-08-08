@@ -285,6 +285,7 @@ namespace CHIP8Interpreter.Emulator
 							{
 								if ((((_previousInput >> i) & 1) == 1) && ((_chip8.InputRegister >> i) & 1) == 0)   //Was the key released?
 								{
+									_chip8.VariableRegisters[instruction.X] = (Byte)i;
 									break;
 								}
 							}
