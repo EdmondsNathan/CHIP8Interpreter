@@ -273,6 +273,12 @@ namespace CHIP8Interpreter.Emulator
 						case 0x07:  //FX07 Set VX to Delay Timer
 							_chip8.VariableRegisters[instruction.X] = _chip8.DelayTimer;
 							break;
+						case 0x0A:  //Blocks until key X is pressed
+							if (((_chip8.InputRegister >> instruction.X) & 1) == 0)
+							{
+								_chip8.ProgramCounter -= 2;
+							}
+							break;
 						case 0x15:  //FX15 Set Delay Timer to VX
 							_chip8.DelayTimer = _chip8.VariableRegisters[instruction.X];
 							break;
