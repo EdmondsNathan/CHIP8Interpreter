@@ -280,11 +280,11 @@ namespace CHIP8Interpreter.Emulator
 							_chip8.SoundTimer = _chip8.VariableRegisters[instruction.X];
 							break;
 						case 0x1E:  //FX1E Add VX to RAM I
-							if ((int)(_chip8.IndexRegister) + (int)(_chip8.VariableRegisters[instruction.X]) >= 0x1000)
-							{
-								_chip8.VariableRegisters[0xF] = 1;
-							}
-							_chip8.IndexRegister += _chip8.VariableRegisters[instruction.X];
+							result = (int)(_chip8.IndexRegister) + (int)(_chip8.VariableRegisters[instruction.X]);
+							flag = (Byte)(result >= 0x1000 ? 1 : 0);
+
+							_chip8.IndexRegister = (UInt16)result;
+							_chip8.VariableRegisters[0xF] = flag;
 							break;
 						case 0x33:  //FX33 Convert VX to decimal and stores in RAM I to I+2
 							for (int i = 0; i < 3; i++)
