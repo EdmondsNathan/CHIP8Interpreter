@@ -18,6 +18,7 @@ namespace CHIP8Interpreter.Emulator
 		public Byte DelayTimer;
 		public Byte SoundTimer;
 		public Byte[] VariableRegisters = new Byte[16];
+		public UInt16 InputRegister;
 
 		public const int DisplayWidth = 64;
 		public const int DisplayHeight = 32;
