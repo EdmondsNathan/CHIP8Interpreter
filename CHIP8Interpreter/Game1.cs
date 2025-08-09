@@ -22,10 +22,6 @@ namespace CHIP8Interpreter
 		Texture2D _pixel;
 		protected override void Initialize()
 		{
-			// TODO: Add your initialization logic here
-
-			TestCodeInit();
-
 			_graphics.IsFullScreen = false;
 			_graphics.PreferredBackBufferWidth = Chip8.DisplayWidth * 10;
 			_graphics.PreferredBackBufferHeight = Chip8.DisplayHeight * 10;
@@ -40,8 +36,6 @@ namespace CHIP8Interpreter
 
 			_pixel = new Texture2D(GraphicsDevice, 1, 1);
 			_pixel.SetData(new Color[] { Color.White });
-
-			// TODO: use this.Content to load your game content here
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -49,17 +43,12 @@ namespace CHIP8Interpreter
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
-			// TODO: Add your update logic here
-
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
-
-			// TODO: Add your drawing code here
-			_interpreter.Execute(_interpreter.Fetch());
 
 			_spriteBatch.Begin();
 			_spriteBatch.Draw(_pixel, new Rectangle(0, 0, Chip8.DisplayWidth * 10, Chip8.DisplayHeight * 10), Color.Black);
@@ -73,7 +62,7 @@ namespace CHIP8Interpreter
 		{
 			for (int y = 0; y < Chip8.DisplayHeight; y++)
 			{
-				UInt64 row = _chip8.Display[y];
+				UInt64 row = Program.MyChip8.Display[y];
 
 				for (int x = 0; x < Chip8.DisplayWidth; x++)
 				{
@@ -83,14 +72,6 @@ namespace CHIP8Interpreter
 					}
 				}
 			}
-		}
-
-		private Chip8 _chip8;
-		private Interpreter _interpreter;
-		private void TestCodeInit()
-		{
-			_chip8 = new Chip8("ROMs/4-flags.ch8");
-			_interpreter = new Interpreter(_chip8);
 		}
 	}
 }
