@@ -14,7 +14,7 @@ This project is released under the CC0 license. Feel free to do whatever you wan
 
 ## 📃To-Do
 - [ ] Implement input
-- [ ] Run the interpreter at an appropriate clock rate
+- [x] Run the interpreter at an appropriate clock rate
 - [ ] Implement timers
 - [ ] Implement sound
 - [x] ~Implement all instructions~
