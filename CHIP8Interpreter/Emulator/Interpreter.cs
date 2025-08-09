@@ -36,6 +36,12 @@ namespace CHIP8Interpreter.Emulator
 		Modern
 	}
 
+	public enum KeypadLayout
+	{
+		Ordered,
+		Cosmac
+	}
+
 	public class Interpreter
 	{
 		private Chip8 _chip8;
@@ -43,12 +49,14 @@ namespace CHIP8Interpreter.Emulator
 		private Random rnd = new();
 		private UInt16 _previousInput;
 		public int ClockSpeedHz;
+		public KeypadLayout KeypadLayout;
 
-		public Interpreter(Chip8 chip8, CompatibilityMode compatibilityMode = CompatibilityMode.Modern, int clockSpeedHz = 700)
+		public Interpreter(Chip8 chip8, CompatibilityMode compatibilityMode = CompatibilityMode.Modern, int clockSpeedHz = 700, KeypadLayout keypadLayout = KeypadLayout.Ordered)
 		{
 			this._chip8 = chip8;
 			this._compatibilityMode = compatibilityMode;
 			this.ClockSpeedHz = clockSpeedHz;
+			this.KeypadLayout = keypadLayout;
 		}
 
 		public Instruction Fetch()
@@ -66,6 +74,13 @@ namespace CHIP8Interpreter.Emulator
 		}
 
 		public void Execute(Instruction instruction)
+		{
+			RunInstruction(instruction);
+
+			_previousInput = _chip8.InputRegister;
+		}
+
+		private void RunInstruction(Instruction instruction)
 		{
 			if (instruction.FullInstruction == 0)
 			{
@@ -288,7 +303,7 @@ namespace CHIP8Interpreter.Emulator
 								if ((((_previousInput >> i) & 1) == 1) && ((_chip8.InputRegister >> i) & 1) == 0)   //Was the key released?
 								{
 									_chip8.VariableRegisters[instruction.X] = (Byte)i;
-									break;
+									return;
 								}
 							}
 
@@ -348,7 +363,6 @@ namespace CHIP8Interpreter.Emulator
 					Debug.WriteLine("Instruction not found");
 					break;
 			}
-			_previousInput = _chip8.InputRegister;
 		}
 	}
 }

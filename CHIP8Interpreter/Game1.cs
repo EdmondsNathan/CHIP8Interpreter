@@ -11,6 +11,15 @@ namespace CHIP8Interpreter
 	{
 		private GraphicsDeviceManager _graphics;
 		private SpriteBatch _spriteBatch;
+		private KeyboardState _keyboardState;
+		private Keys[] _keypad =
+		{
+			Keys.D1, Keys.D2, Keys.D3, Keys.D4,
+			Keys.Q, Keys.W, Keys.E, Keys.R,
+			Keys.A, Keys.S, Keys.D, Keys.F,
+			Keys.Z, Keys.X, Keys.C, Keys.V
+		};
+		private int[] _keyLayout;
 
 		public Game1()
 		{
@@ -27,6 +36,8 @@ namespace CHIP8Interpreter
 			_graphics.PreferredBackBufferHeight = Chip8.DisplayHeight * 10;
 			_graphics.ApplyChanges();
 
+			SetKeypadLayout();
+
 			base.Initialize();
 		}
 
@@ -42,6 +53,8 @@ namespace CHIP8Interpreter
 		{
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
+
+			UpdateInput(_keyboardState);
 
 			base.Update(gameTime);
 		}
@@ -72,6 +85,44 @@ namespace CHIP8Interpreter
 					}
 				}
 			}
+		}
+
+		private void SetKeypadLayout()
+		{
+			if (Program.MyInterpreter.KeypadLayout == KeypadLayout.Ordered)
+			{
+				_keyLayout = new[]
+				{
+					0, 1, 2, 3,
+					4, 5, 6, 7,
+					8, 9, 0xA, 0xB,
+					0xC, 0xD, 0xE, 0xF
+				};
+			}
+			else if (Program.MyInterpreter.KeypadLayout == KeypadLayout.Cosmac)
+			{
+				_keyLayout = new[]
+				{
+					1, 2, 3, 0xC,
+					4, 5, 6, 0xD,
+					7, 8, 9, 0xE,
+					0xA, 0, 0xB, 0xF
+				};
+			}
+		}
+
+		private void UpdateInput(KeyboardState keyboardState)
+		{
+			_keyboardState = Keyboard.GetState();
+			UInt16 keyboardByte = 0;
+
+			for (int i = 0; i < 16; i++)
+			{
+				int result = _keyboardState.IsKeyDown(_keypad[i]) ? 1 : 0;
+				keyboardByte += (UInt16)(result << _keyLayout[i]);
+			}
+
+			Program.MyChip8.InputRegister = keyboardByte;
 		}
 	}
 }

@@ -5,8 +5,8 @@ using System.Threading;
 
 class Program
 {
-	public static Chip8 MyChip8 = new Chip8("ROMs/4-flags.ch8");
-	public static Interpreter MyInterpreter = new Interpreter(MyChip8, CompatibilityMode.Modern, 700);
+	public static Chip8 MyChip8 = new Chip8("ROMs/6-keypad.ch8");
+	public static Interpreter MyInterpreter = new Interpreter(MyChip8, CompatibilityMode.Modern, 2000, KeypadLayout.Cosmac);
 
 	static void Main(string[] args)
 	{
@@ -15,6 +15,9 @@ class Program
 
 		Thread chip8Thread = new Thread(() => StartChip8(gameThread));
 		chip8Thread.Start();
+
+		Thread timerThread = new Thread(() => StartTimers(gameThread));
+		timerThread.Start();
 	}
 
 	private static void StartGame()
@@ -40,6 +43,24 @@ class Program
 
 			Thread.Sleep(TimeSpan.FromMilliseconds(1000f / (MyInterpreter.ClockSpeedHz - timeSpan.Milliseconds)));
 			deltaTime.Stop();
+		}
+	}
+
+	private static void StartTimers(Thread gameThread)
+	{
+		while (gameThread.IsAlive)
+		{
+			if (MyChip8.DelayTimer > 0)
+			{
+				MyChip8.DelayTimer--;
+			}
+
+			if (MyChip8.SoundTimer > 0)
+			{
+				MyChip8.SoundTimer--;
+			}
+
+			Thread.Sleep(TimeSpan.FromMilliseconds(1000f / 60f));
 		}
 	}
 }
