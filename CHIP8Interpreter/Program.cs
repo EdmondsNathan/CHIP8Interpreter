@@ -40,7 +40,6 @@ class Program
 
 			Thread.Sleep(TimeSpan.FromMilliseconds(1000f / (MyInterpreter.ClockSpeedHz - timeSpan.Milliseconds)));
 			deltaTime.Stop();
-			Debug.WriteLine(deltaTime.Elapsed.TotalMilliseconds);
 		}
 	}
 }
