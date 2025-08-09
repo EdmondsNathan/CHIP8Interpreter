@@ -13,9 +13,9 @@ This project is released under the CC0 license. Feel free to do whatever you wan
 - The project has support for both legacy and modern CHIP-8 instruction sets
 
 ## 📃To-Do
-- [ ] Implement input
+- [X] Implement input
 - [x] Run the interpreter at an appropriate clock rate
-- [ ] Implement timers
+- [X] Implement timers
 - [ ] Implement sound
 - [x] ~Implement all instructions~
 - [x] ~Show the display on screen~ 
