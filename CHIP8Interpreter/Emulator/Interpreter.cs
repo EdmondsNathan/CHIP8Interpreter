@@ -42,11 +42,13 @@ namespace CHIP8Interpreter.Emulator
 		private CompatibilityMode _compatibilityMode;
 		private Random rnd = new();
 		private UInt16 _previousInput;
+		public int ClockSpeedHz;
 
-		public Interpreter(Chip8 chip8, CompatibilityMode compatibilityMode = CompatibilityMode.Modern)
+		public Interpreter(Chip8 chip8, CompatibilityMode compatibilityMode = CompatibilityMode.Modern, int clockSpeedHz = 700)
 		{
 			this._chip8 = chip8;
 			this._compatibilityMode = compatibilityMode;
+			this.ClockSpeedHz = clockSpeedHz;
 		}
 
 		public Instruction Fetch()
