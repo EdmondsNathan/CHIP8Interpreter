@@ -9,13 +9,5 @@ This project is released under the CC0 license. Feel free to do whatever you wan
 - This project functions with 3 main components:
   - The Chip8 class holds all the data associated with the interpreter, such as the RAM and registers.
   - The Interpreter class fetches, decodes, and executes the instructions from RAM.
-  - The Game class uses MonoGame to show the display and handle input.
+  - The Game class uses MonoGame to show the display, play sounds, and handle input.
 - The project has support for both legacy and modern CHIP-8 instruction sets
-
-## 📃To-Do
-- [X] Implement input
-- [x] Run the interpreter at an appropriate clock rate
-- [X] Implement timers
-- [ ] Implement sound
-- [x] ~Implement all instructions~
-- [x] ~Show the display on screen~ 
