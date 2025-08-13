@@ -5,8 +5,8 @@ using System.Threading;
 
 class Program
 {
-	public static Chip8 MyChip8 = new Chip8("ROMs/6-keypad.ch8");
-	public static Interpreter MyInterpreter = new Interpreter(MyChip8, CompatibilityMode.Modern, 2000, KeypadLayout.Cosmac);
+	public static Chip8 MyChip8 = new Chip8("ROMs/7-beep.ch8");
+	public static Interpreter MyInterpreter = new Interpreter(MyChip8, CompatibilityMode.Legacy, 1000, KeypadLayout.Cosmac);
 
 	static void Main(string[] args)
 	{

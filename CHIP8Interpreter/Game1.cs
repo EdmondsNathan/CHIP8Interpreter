@@ -1,5 +1,6 @@
 ﻿using CHIP8Interpreter.Emulator;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -20,6 +21,8 @@ namespace CHIP8Interpreter
 			Keys.Z, Keys.X, Keys.C, Keys.V
 		};
 		private int[] _keyLayout;
+		private SoundEffectInstance _soundEffectInstance;
+		private SoundEffect _soundEffect;
 
 		public Game1()
 		{
@@ -47,6 +50,10 @@ namespace CHIP8Interpreter
 
 			_pixel = new Texture2D(GraphicsDevice, 1, 1);
 			_pixel.SetData(new Color[] { Color.White });
+
+			_soundEffect = Content.Load<SoundEffect>("C Note");
+			_soundEffectInstance = _soundEffect.CreateInstance();
+			_soundEffectInstance.IsLooped = true;
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -55,6 +62,8 @@ namespace CHIP8Interpreter
 				Exit();
 
 			UpdateInput(_keyboardState);
+
+			PlaySound();
 
 			base.Update(gameTime);
 		}
@@ -124,5 +133,17 @@ namespace CHIP8Interpreter
 
 			Program.MyChip8.InputRegister = keyboardByte;
 		}
+		private void PlaySound()
+		{
+			if (Program.MyChip8.SoundTimer > 0)
+			{
+				_soundEffectInstance.Play();
+			}
+			else
+			{
+				_soundEffectInstance.Stop();
+			}
+		}
 	}
+
 }
