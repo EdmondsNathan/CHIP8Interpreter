@@ -1,0 +1,5 @@
+All files, except for those found in the ROMs directory, are licensed under the CC0 1.0 Universal license.
+
+All *.ch8 files that follow the format #-NAME.ch8 are licensed under the GPL-3.0 license and originate from https://github.com/Timendus/chip8-test-suite
+
+All other *.ch8 files are licensed under the MIT license and originate from https://github.com/mir3z/chip8-emu
