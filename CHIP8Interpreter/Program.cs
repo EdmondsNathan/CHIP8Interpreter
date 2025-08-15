@@ -5,7 +5,7 @@ using System.Threading;
 
 class Program
 {
-	private static Chip8 _chip8 = new Chip8("ROMs/7-beep.ch8");
+	private static Chip8 _chip8 = new Chip8("ROMs/Pong (1 player).ch8");
 	private static Interpreter _interpreter = new Interpreter(_chip8, CompatibilityMode.Legacy, 1000, KeypadLayout.Cosmac);
 
 	static void Main(string[] args)
