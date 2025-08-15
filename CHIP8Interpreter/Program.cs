@@ -5,8 +5,8 @@ using System.Threading;
 
 class Program
 {
-	public static Chip8 MyChip8 = new Chip8("ROMs/7-beep.ch8");
-	public static Interpreter MyInterpreter = new Interpreter(MyChip8, CompatibilityMode.Legacy, 1000, KeypadLayout.Cosmac);
+	private static Chip8 _chip8 = new Chip8("ROMs/7-beep.ch8");
+	private static Interpreter _interpreter = new Interpreter(_chip8, CompatibilityMode.Legacy, 1000, KeypadLayout.Cosmac);
 
 	static void Main(string[] args)
 	{
@@ -22,7 +22,7 @@ class Program
 
 	private static void StartGame()
 	{
-		using var game = new CHIP8Interpreter.Game1();
+		using var game = new CHIP8Interpreter.Game1(_interpreter, _chip8);
 		game.Run();
 	}
 
@@ -36,12 +36,12 @@ class Program
 			Stopwatch deltaTime = new Stopwatch();
 			deltaTime.Restart();
 			stopwatch.Restart();
-			MyInterpreter.Execute(MyInterpreter.Fetch());
+			_interpreter.Execute(_interpreter.Fetch());
 
 			stopwatch.Stop();
 			timeSpan = stopwatch.Elapsed;
 
-			Thread.Sleep(TimeSpan.FromMilliseconds(1000f / (MyInterpreter.ClockSpeedHz - timeSpan.Milliseconds)));
+			Thread.Sleep(TimeSpan.FromMilliseconds(1000f / (_interpreter.ClockSpeedHz - timeSpan.Milliseconds)));
 			deltaTime.Stop();
 		}
 	}
@@ -50,14 +50,14 @@ class Program
 	{
 		while (gameThread.IsAlive)
 		{
-			if (MyChip8.DelayTimer > 0)
+			if (_chip8.DelayTimer > 0)
 			{
-				MyChip8.DelayTimer--;
+				_chip8.DelayTimer--;
 			}
 
-			if (MyChip8.SoundTimer > 0)
+			if (_chip8.SoundTimer > 0)
 			{
-				MyChip8.SoundTimer--;
+				_chip8.SoundTimer--;
 			}
 
 			Thread.Sleep(TimeSpan.FromMilliseconds(1000f / 60f));

@@ -23,12 +23,17 @@ namespace CHIP8Interpreter
 		private int[] _keyLayout;
 		private SoundEffectInstance _soundEffectInstance;
 		private SoundEffect _soundEffect;
+		private Interpreter _interpreter;
+		private Chip8 _chip8;
 
-		public Game1()
+		public Game1(Interpreter interpreter, Chip8 chip8)
 		{
 			_graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
+
+			_interpreter = interpreter;
+			_chip8 = chip8;
 		}
 
 		Texture2D _pixel;
@@ -84,7 +89,7 @@ namespace CHIP8Interpreter
 		{
 			for (int y = 0; y < Chip8.DisplayHeight; y++)
 			{
-				UInt64 row = Program.MyChip8.Display[y];
+				UInt64 row = _chip8.Display[y];
 
 				for (int x = 0; x < Chip8.DisplayWidth; x++)
 				{
@@ -98,7 +103,7 @@ namespace CHIP8Interpreter
 
 		private void SetKeypadLayout()
 		{
-			if (Program.MyInterpreter.KeypadLayout == KeypadLayout.Ordered)
+			if (_interpreter.KeypadLayout == KeypadLayout.Ordered)
 			{
 				_keyLayout = new[]
 				{
@@ -108,7 +113,7 @@ namespace CHIP8Interpreter
 					0xC, 0xD, 0xE, 0xF
 				};
 			}
-			else if (Program.MyInterpreter.KeypadLayout == KeypadLayout.Cosmac)
+			else if (_interpreter.KeypadLayout == KeypadLayout.Cosmac)
 			{
 				_keyLayout = new[]
 				{
@@ -131,11 +136,11 @@ namespace CHIP8Interpreter
 				keyboardByte += (UInt16)(result << _keyLayout[i]);
 			}
 
-			Program.MyChip8.InputRegister = keyboardByte;
+			_chip8.InputRegister = keyboardByte;
 		}
 		private void PlaySound()
 		{
-			if (Program.MyChip8.SoundTimer > 0)
+			if (_chip8.SoundTimer > 0)
 			{
 				_soundEffectInstance.Play();
 			}
