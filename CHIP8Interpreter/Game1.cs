@@ -138,6 +138,7 @@ namespace CHIP8Interpreter
 
 			_chip8.InputRegister = keyboardByte;
 		}
+
 		private void PlaySound()
 		{
 			if (_chip8.SoundTimer > 0)

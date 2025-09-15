@@ -229,12 +229,11 @@ namespace CHIP8Interpreter.Emulator
 				case 0xD:   //DXYN Draw N pixels tall sprite from Index Register I's memory location at vX and vY
 					Byte x = (Byte)(_chip8.VariableRegisters[instruction.X] % Chip8.DisplayWidth);
 					Byte y = (Byte)(_chip8.VariableRegisters[instruction.Y] % Chip8.DisplayHeight);
-
 					_chip8.VariableRegisters[0xF] = 0;
 
 					for (int i = 0; i < instruction.N; i++)
 					{
-						if (y + i >= Chip8.DisplayHeight - 1)       //clip sprite
+						if (y + i >= Chip8.DisplayHeight - 1)       //clip sprite vertically
 						{
 							break;
 						}
@@ -243,17 +242,15 @@ namespace CHIP8Interpreter.Emulator
 
 						for (int e = 0; e < 8; e++)
 						{
-							if (x + e > Chip8.DisplayWidth - 1)    //clip sprite
+							if (x + e > Chip8.DisplayWidth - 1)    //clip sprite horizontally
 							{
 								break;
 							}
-
 							if (((row >> (7 - e)) & 1) == 0)    //is sprite pixel 0?
 							{
 								continue;
 							}
 							//sprite pixel is 1
-
 							if (((_chip8.Display[y + i] >> (Chip8.DisplayWidth - (x + e))) & 0x1) == 0)    //is screen pixel 0?
 							{
 								_chip8.Display[y + i] += (UInt64)(1) << (Chip8.DisplayWidth - x - e);
@@ -261,7 +258,6 @@ namespace CHIP8Interpreter.Emulator
 							else
 							{
 								_chip8.Display[y + i] -= (UInt64)(1) << (Chip8.DisplayWidth - x - e);
-
 								_chip8.VariableRegisters[0xF] = 1;
 							}
 						}
