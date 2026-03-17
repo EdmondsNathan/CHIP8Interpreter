@@ -12,12 +12,29 @@ class Program
 	{
 		if (args.Length < 1)
 		{
-			Console.WriteLine("Usage: CHIP8Interpreter <path-to-rom>");
+			Console.WriteLine("Usage: CHIP8Interpreter <path-to-rom> [legacy|modern]");
 			return;
 		}
 
+		CompatibilityMode mode = CompatibilityMode.Legacy;
+		if (args.Length >= 2)
+		{
+			switch (args[1].ToLowerInvariant())
+			{
+				case "legacy":
+					mode = CompatibilityMode.Legacy;
+					break;
+				case "modern":
+					mode = CompatibilityMode.Modern;
+					break;
+				default:
+					Console.WriteLine($"Invalid mode '{args[1]}'. Expected 'legacy' or 'modern'.");
+					return;
+			}
+		}
+
 		_chip8 = new Chip8(args[0]);
-		_interpreter = new Interpreter(_chip8, CompatibilityMode.Legacy, 1000, KeypadLayout.Cosmac);
+		_interpreter = new Interpreter(_chip8, mode, 1000, KeypadLayout.Cosmac);
 
 		Thread gameThread = new Thread(() => StartGame());
 		gameThread.Start();
