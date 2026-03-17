@@ -5,11 +5,20 @@ using System.Threading;
 
 class Program
 {
-	private static Chip8 _chip8 = new Chip8("ROMs/Pong (1 player).ch8");
-	private static Interpreter _interpreter = new Interpreter(_chip8, CompatibilityMode.Legacy, 1000, KeypadLayout.Cosmac);
+	private static Chip8 _chip8;
+	private static Interpreter _interpreter;
 
 	static void Main(string[] args)
 	{
+		if (args.Length < 1)
+		{
+			Console.WriteLine("Usage: CHIP8Interpreter <path-to-rom>");
+			return;
+		}
+
+		_chip8 = new Chip8(args[0]);
+		_interpreter = new Interpreter(_chip8, CompatibilityMode.Legacy, 1000, KeypadLayout.Cosmac);
+
 		Thread gameThread = new Thread(() => StartGame());
 		gameThread.Start();
 
